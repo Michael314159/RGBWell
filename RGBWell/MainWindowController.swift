@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class MainWindowController: NSWindowController {
+class MainWindowController: NSWindowController,NSSpeechSynthesizerDelegate {
     
     
     var red = 0.5
@@ -39,21 +39,41 @@ class MainWindowController: NSWindowController {
     
     //Add speech
     var speechSynth: NSSpeechSynthesizer?
-    //var IsSpeaking: Bool?
+    var IsSpeaking: Bool = false {
+        didSet {
+            updateButtons()
+        }
+    }
     
+    func updateButtons() {
+        if IsSpeaking {
+            buttonSpeak.isEnabled = false
+            buttonStopSpeaking.isEnabled = true
+        } else {
+            buttonSpeak.isEnabled = true
+            buttonStopSpeaking.isEnabled = false
+        }
+    }
     
     @IBAction func Speak(_ sender: NSButton) {
         let speakString = "Red is \(formatRed) \n Green is \(formatGreen) \n Blue is \(formatBlue)"
         
         speechSynth?.startSpeaking(speakString)
-        //IsSpeaking = true
+        IsSpeaking = true
         buttonStopSpeaking.isEnabled = true
     }
     
     
     @IBAction func StopSpeaking(_ sender: NSButton) {
         speechSynth?.stopSpeaking()
-        //IsSpeaking = false
+        IsSpeaking = false
+    }
+    
+    
+    func speechSynthesizer(_ sender: NSSpeechSynthesizer, didFinishSpeaking finishedSpeaking: Bool) {
+        IsSpeaking = false
+        print("Finished Speaking: \(finishedSpeaking)")
+        
     }
     
     func updateColor() {
@@ -112,10 +132,9 @@ class MainWindowController: NSWindowController {
         lblRed.stringValue = formatRed
         lblGreen.stringValue = formatGreen
         lblBlue.stringValue = formatBlue
+        
+        speechSynth?.delegate = self
         buttonStopSpeaking.isEnabled = false
-        
-        
-        
     }
     
 }
