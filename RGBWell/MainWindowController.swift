@@ -11,9 +11,20 @@ import Cocoa
 class MainWindowController: NSWindowController {
     
     
-    var redLabel = 0.5
-    var greenLabel = 0.5
-    var blueLabel = 0.5
+    var red = 0.5
+    var green = 0.5
+    var blue = 0.5
+    
+    
+    var formatRed: String = ""
+    var formatGreen: String = ""
+    var formatBlue: String = ""
+        
+    
+    @IBOutlet weak var lblRed: NSTextField!
+    @IBOutlet weak var lblGreen: NSTextField!
+    @IBOutlet weak var lblBlue: NSTextField!
+   
     
     let alpha = 1.0 //opacity value neede by NSColor()
     
@@ -23,7 +34,7 @@ class MainWindowController: NSWindowController {
     
     
     func updateColor() {
-        let newColor = NSColor(calibratedRed: CGFloat(redLabel), green: CGFloat(greenLabel), blue: CGFloat(blueLabel), alpha: CGFloat(alpha))
+        let newColor = NSColor(calibratedRed: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: CGFloat(alpha))
         colorWell.color = newColor
         
     }
@@ -33,20 +44,26 @@ class MainWindowController: NSWindowController {
     
     
     @IBAction func adjustRed(_ sender: NSSlider) {
-        redLabel = sender.doubleValue
+        red = sender.doubleValue
+        formatRed = String(format: "%.2f", red)
+        lblRed.stringValue = formatRed
         updateColor()
         
     }
     
     
     @IBAction func adjustGreen(_ sender: NSSlider) {
-        greenLabel = sender.doubleValue
+        green = sender.doubleValue
+        formatGreen = String(format: "%.2f", green)
+        lblGreen.stringValue = formatGreen
         updateColor()
     }
     
     
     @IBAction func adjustBlue(_ sender: NSSlider) {
-        blueLabel = sender.doubleValue
+        blue = sender.doubleValue
+        formatBlue = String(format: "%.2f", blue)
+        lblBlue.stringValue = formatBlue
         updateColor()
     }
     
