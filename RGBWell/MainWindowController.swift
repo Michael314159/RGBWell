@@ -32,6 +32,29 @@ class MainWindowController: NSWindowController {
     @IBOutlet weak var colorWell: NSColorWell!
     
     
+    @IBOutlet weak var buttonStopSpeaking: NSButton!
+    
+    @IBOutlet weak var buttonSpeak: NSButton!
+    
+    
+    //Add speech
+    var speechSynth: NSSpeechSynthesizer?
+    //var IsSpeaking: Bool?
+    
+    
+    @IBAction func Speak(_ sender: NSButton) {
+        let speakString = "Red is \(formatRed) \n Green is \(formatGreen) \n Blue is \(formatBlue)"
+        
+        speechSynth?.startSpeaking(speakString)
+        //IsSpeaking = true
+        buttonStopSpeaking.isEnabled = true
+    }
+    
+    
+    @IBAction func StopSpeaking(_ sender: NSButton) {
+        speechSynth?.stopSpeaking()
+        //IsSpeaking = false
+    }
     
     func updateColor() {
         let newColor = NSColor(calibratedRed: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: CGFloat(alpha))
@@ -76,9 +99,20 @@ class MainWindowController: NSWindowController {
 
         // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
         
+        // for speaking...
+        speechSynth = NSSpeechSynthesizer()
         
         //update colorwell to label numbers...
         updateColor()
+        
+        //set initial label values to match initial sliders
+        formatRed = String(format: "%.2f", 0.50)
+        formatGreen = String(format: "%.2f", 0.50)
+        formatBlue = String(format: "%.2f", 0.50)
+        lblRed.stringValue = formatRed
+        lblGreen.stringValue = formatGreen
+        lblBlue.stringValue = formatBlue
+        buttonStopSpeaking.isEnabled = false
         
         
         
